@@ -11,8 +11,9 @@ export const SendMoney = () => {
   const name = searchParams.get("name");
   const userId = searchParams.get("userId");
   const [amount, setAmount] = useState("");
+  const [category, setCategory] = useState('Other');
   return (
-    <div className="flex justify-center h-screen bg-gray-100">
+    <div className="flex justify-center h-screen" style={{backgroundColor: '#E8E8E8'}}>
       <div className="h-full flex flex-col justify-center">
         {!isLoading && (
           <div>
@@ -22,7 +23,7 @@ export const SendMoney = () => {
               </div>
               <div className="p-6">
                 <div className="flex items-center just space-x-4">
-                  <div className="w-12 h-12 rounded-full bg-green-500 flex items-center justify-center">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{backgroundColor: '#00D4AA'}}>
                     <span className="text-2xl text-white">
                       {name[0].toUpperCase()}
                     </span>
@@ -37,7 +38,7 @@ export const SendMoney = () => {
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                       htmlFor="amount"
                     >
-                      Amount (in Rs)
+                      Amount (in $)
                     </label>
                     <input
                       onChange={(e) => {
@@ -49,6 +50,29 @@ export const SendMoney = () => {
                       placeholder="Enter amount"
                     />
                   </div>
+                  <div className="space-y-2">
+                    <label
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      htmlFor="category"
+                    >
+                      Category (Optional)
+                    </label>
+                    <select
+                      onChange={(e) => setCategory(e.target.value)}
+                      value={category}
+                      className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                      id="category"
+                    >
+                      <option value="Other">Other</option>
+                      <option value="Food">Food</option>
+                      <option value="Entertainment">Entertainment</option>
+                      <option value="Rent">Rent</option>
+                      <option value="Bills">Bills</option>
+                      <option value="Shopping">Shopping</option>
+                      <option value="Transportation">Transportation</option>
+                      <option value="Healthcare">Healthcare</option>
+                    </select>
+                  </div>
                   <button
                     onClick={async () => {
                       setIsLoading(true);
@@ -58,6 +82,7 @@ export const SendMoney = () => {
                         {
                           to: id,
                           amount,
+                          category
                         },
                         {
                           headers: {
@@ -76,7 +101,8 @@ export const SendMoney = () => {
                         navigate("/dashboard?userId=" + userId);
                       }
                     }}
-                    className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full bg-green-500 text-white"
+                    className="justify-center rounded-md text-sm font-medium ring-offset-background transition-colors h-10 px-4 py-2 w-full text-white hover:opacity-90"
+                    style={{backgroundColor: '#2B4C7E'}}
                   >
                     Initiate Transfer
                   </button>
@@ -87,7 +113,7 @@ export const SendMoney = () => {
         )}
         {isLoading && (
           <div>
-            <ReactLoading type="bars" color="#00000" height={100} width={100} />
+            <ReactLoading type="bars" color="#2B4C7E" height={100} width={100} />
           </div>
         )}
       </div>
