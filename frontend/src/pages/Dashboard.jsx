@@ -40,17 +40,26 @@ export const Dashboard = () => {
     fetchBalance(userId);
   }, [userId]);
   return (
-    <div className="bg-slate-300 h-screen">
+    <div className="h-screen" style={{backgroundColor: '#E8E8E8'}}>
       {!isLoading && (
         <div>
           <AppBar name={userId} />
           <Balance value={balance} />
+          <div className="px-9 mt-6 mb-4">
+            <button
+              onClick={() => navigate("/analytics?userId=" + userId)}
+              className="w-full md:w-auto px-6 py-3 rounded-md text-white font-medium hover:opacity-90 transition-opacity"
+              style={{backgroundColor: '#00D4AA'}}
+            >
+              Review My Spending
+            </button>
+          </div>
           <UserComponent username={userId} />
         </div>
       )}
       {isLoading && (
         <div className="flex flex-col justify-center items-center h-screen">
-          <ReactLoading type="bars" color="#00000" height={100} width={100} />
+          <ReactLoading type="bars" color="#2B4C7E" height={100} width={100} />
         </div>
       )}
     </div>
