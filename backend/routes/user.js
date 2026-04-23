@@ -151,24 +151,31 @@ router.put("/", authMiddleware, async (req, res) => {
 
 // Get User From Backend using data Filter such as FirstName and lastName
 
-router.get("/bulk", async (req, res) => {
+router.get("/bulk", authMiddleware, async (req, res) => {
     const filter = req.query.filter || "";
-    console.log(filter)
+
+    if (filter.length === 0) {
+        return res.json({ user: [] });
+    }
+
+    const escaped = filter.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
     const users = await User.find({
         $or: [{
             firstName: {
-                "$regex": filter
+                "$regex": escaped,
+                "$options": "i"
             }
         }, {
             lastName: {
-                "$regex": filter
+                "$regex": escaped,
+                "$options": "i"
             }
         }]
-    })
+    }).limit(10);
 
     res.json({
         user: users.map(user => ({
-            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             _id: user._id
