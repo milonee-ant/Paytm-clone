@@ -44,6 +44,7 @@ export const SendMoney = () => {
                         setAmount(e.target.value);
                       }}
                       type="number"
+                      min="1"
                       className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
                       id="amount"
                       placeholder="Enter amount"
@@ -51,6 +52,10 @@ export const SendMoney = () => {
                   </div>
                   <button
                     onClick={async () => {
+                      if (!amount || Number(amount) <= 0) {
+                        alert("Please enter a valid amount greater than zero");
+                        return;
+                      }
                       setIsLoading(true);
                       setTimeout(() => {}, 4000);
                       const response = await axios.post(
